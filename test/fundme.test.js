@@ -4,11 +4,13 @@ const {ethers} = require("hardhat")
 describe("test fundme contract", async function() {
      //beforeEach 每个if运行之前都会运行这个
      let fundMe
+     let secondFundMe
      let secondAccount
      let firstAccount
      let mockV3Aggregator
      
     beforeEach(async function() {
+        //类似执行了 npx hardhat deploy
         await deployments.fixture(["all"])
         firstAccount = (await getNamedAccounts()).firstAccount
         secondAccount = (await getNamedAccounts()).secondAccount
@@ -19,7 +21,7 @@ describe("test fundme contract", async function() {
         //连接新的地址用这个函数
         secondFundMe = await ethers.getContract("FundMe", secondAccount)
         //部署一个假的合约
-        // mockV3Aggregator = await deployments.get("MockV3Aggregator")
+        mockV3Aggregator = await deployments.get("MockV3Aggregator")
         
     })
 

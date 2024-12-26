@@ -39,3 +39,7 @@ require("hardhat-deploy-ethers");
 验证deploy文件夹的部署  
 npx hardhat deploy  
 npx hardhat deploy --network sepolia 
+
+部署时，hardhat会把合约信息写入到 deployments/sepolia 文件中，如果需要重新部署，需要删除这个文件  
+否则合约地址是不变的，或者执行 **npx hardhat deploy --network sepolia --reset**
+
