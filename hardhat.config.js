@@ -15,6 +15,10 @@ const { ProxyAgent, setGlobalDispatcher } = require("undici");
 // require("./tasks/interact-fundme")
 //自动去找 index.js文件，不需要再像上面这样单独引入了
 require("./tasks")
+//安装 hardhat deploy
+require("@nomicfoundation/hardhat-ethers");
+require("hardhat-deploy");
+require("hardhat-deploy-ethers");
 
 const SEPOLIA_TEST_URL = process.env.SEPOLIA_TEST_URL
 const PRIVATE_TEST_KEY1 = process.env.PRIVATE_TEST_KEY1
@@ -42,6 +46,14 @@ module.exports = {
     apiKey: {
       //etherscan 进行合约验证是时候用的
       sepolia: ETHERSCAN_API_KEY
+    }
+  },
+  namedAccounts: {
+    firstAccount: {
+      default: 0
+    },
+    secondAccount: {
+      default: 1
     }
   },
 };
