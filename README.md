@@ -18,5 +18,5 @@ npx hardhat run --network sepolia .\deployFundMe.js
 
 部署方式二
 
-npx hardhat deploy-fundme --network sepolia 
+npx hardhat deploy-fundme --network sepolia   
 npx hardhat interact-fundMe --addr 合约地址 --network sepolia
