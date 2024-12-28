@@ -33,6 +33,11 @@ setGlobalDispatcher(proxyAgent);
 module.exports = {
   solidity: "0.8.28",
   defaultNetwork: "hardhat",
+  mocha: {
+     //修改配置等待200秒，默认配置超过40秒就报错
+     //即合约部署的时间，一般来说合约部署到测试网不止需要40秒的
+     timeout: 300000
+  },
   networks: {
     sepolia: {
       //如果要部署真实的测试网，通过第三方服务商拿到免费的url Elchemy,Infura,QuickNode
@@ -56,4 +61,7 @@ module.exports = {
       default: 1
     }
   },
+  gasReporter: {
+    enabled: true
+  }
 };

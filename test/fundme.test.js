@@ -2,9 +2,11 @@ const {ethers} = require("hardhat")
 const {assert, expect} = require("chai")
 //用来模拟时间流失
 const helpers = require("@nomicfoundation/hardhat-network-helpers")
+const {devlopmentChains} = require("../helper-hardhat-config")
 
-
-describe("test fundme contract", async function() {
+!devlopmentChains.includes(network.name) 
+? describe.skip 
+: describe("test fundme contract", async function() {
      //beforeEach 每个if运行之前都会运行这个
      let fundMe
      let secondFundMe
@@ -35,7 +37,7 @@ describe("test fundme contract", async function() {
         // //部署FundMe合约
         // const fundMe = await fundMeFactory.deploy(180)
         await fundMe.waitForDeployment()
-        assert.equal((await fundMe.owner()), firstAccount)
+        await assert.equal((await fundMe.owner()), firstAccount)
     })
 
     it("window close, value grater thean minium, fund failed",
@@ -110,7 +112,7 @@ describe("test fundme contract", async function() {
     it("window open, target not reached, funder has balance", 
         async function() {
             await fundMe.fund({value: ethers.parseEther("0.1")})
-            expect(fundMe.refund()).to.be.revertedWith("window is not closed")
+            await expect(fundMe.refund()).to.be.revertedWith("window is not closed")
         }
     )
 
@@ -119,29 +121,28 @@ describe("test fundme contract", async function() {
             await fundMe.fund({value: ethers.parseEther("1")})
             await helpers.time.increase(200)
             await helpers.mine()
-            expect(fundMe.refund()).to.be.revertedWith("Target is reached")
+            await expect(fundMe.refund()).to.be.revertedWith("Target is reached")
         }
     )
 
-    it("window closed, target reached, funder no balance", 
+    it("window closed, target not reached, funder no balance", 
         async function() {
-            await fundMe.fund({value: ethers.parseEther("1")})
+            await fundMe.fund({value: ethers.parseEther("0.1")})
             await helpers.time.increase(200)
             await helpers.mine()
-            expect(secondFundMe.refund()).to.be.revertedWith("there is no fund for you")
+            await expect(secondFundMe.refund()).to.be.revertedWith("there is no fund for you")
         }
     )
 
-    it("window closed, target reached, funder has balance", 
+    it("window closed, target not reached, funder has balance", 
         async function() {
-            await fundMe.fund({value: ethers.parseEther("1")})
+            await fundMe.fund({value: ethers.parseEther("0.1")})
             await helpers.time.increase(200)
             await helpers.mine()
-            expect(fundMe.refund()).to.emit(fundMe, "RefundBalance")
-            .withArgs(firstAccount, ethers.parseEther("1"))
+            await expect(fundMe.refund()).to.emit(fundMe, "RefundBalance")
+            .withArgs(firstAccount, ethers.parseEther("0.1"))
             // const balance = await fundMe.fundersToAmount(firstAccount)
             // expect(balance).to.equals(ethers.parseEther("1"))
         }
     )
-
 })
