@@ -19,6 +19,8 @@ require("./tasks")
 require("@nomicfoundation/hardhat-ethers");
 require("hardhat-deploy");
 require("hardhat-deploy-ethers");
+//配置ABI导出 npm install --save-dev hardhat-abi-exporter
+require('hardhat-abi-exporter');
 
 const SEPOLIA_TEST_URL = process.env.SEPOLIA_TEST_URL
 const PRIVATE_TEST_KEY1 = process.env.PRIVATE_TEST_KEY1
@@ -63,5 +65,15 @@ module.exports = {
   },
   gasReporter: {
     enabled: true
-  }
+  },
+  abiExporter: { 
+    path: './abi', // ABI导出目录的路径（相对于Hardhat根目录）
+    runOnCompile: true, // 是否在编译时自动导出ABI
+    clear: true, // 是否在编译时清除旧的ABI文件
+    flat: true, // 是否将输出目录扁平化（可能会造成命名冲突）
+    only: [], // 选择包含的合约数组
+    except: [], // 排除的合约数组
+    spacing: 2, // 格式化输出的缩进空格数
+    pretty: false // 是否使用接口风格的格式化输出
+  },
 };
